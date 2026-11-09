@@ -78,3 +78,29 @@ It can contain global styling rules, CSS variables, and base styles.
 `AGENTS.md` is an optional instruction file for AI coding agents. It can contain project-specific instructions, coding conventions, and guidelines for working with the codebase.
 
 The Next.js application does not need `AGENTS.md` to run. It is not required for building or executing the application.
+
+# Lab 2 – First Server-Rendered Page
+
+## 1. In the page source, are the movie titles present for `/movies`? For `/movies-client`? Why?
+
+For `/movies`, the movie titles are present in the HTML source because the data is fetched and rendered on the server before the HTML is sent to the browser.
+
+For `/movies-client`, the movie titles are not present in the initial HTML source. Only the "Loading movies..." message appears because `useEffect()` fetches the movie data in the browser after the page loads.
+
+## 2. Without the `force-dynamic` line, you run `npm run build` again tomorrow, then `npm start`, without changing anything else. What does the "Rendered at" timestamp of `/movies` show, and why?
+
+The timestamp shows the time when the application was built tomorrow. This is because the page is statically generated during the build process. It does not generate a new timestamp for every visitor or refresh.
+
+## 3. Part E made every request to `/movies` about one second slower. Give one situation where `force-dynamic` is still the right choice, and explain why.
+
+`force-dynamic` is useful for pages that need fresh data on every request, such as a live stock price or real-time dashboard. It ensures users receive the latest information instead of seeing previously generated static content.
+
+## 4. A classmate sees `[movies] rendered 6 movies` in the browser console and says: "So this code runs in the browser." What do you answer, and how can you prove it?
+
+I would explain that the code runs on the server, not in the browser. The message comes from the `console.log()` statement in the Server Component.
+
+We can prove this by checking the terminal running Next.js, viewing the page source, and disabling JavaScript. The movie titles remain visible even when JavaScript is disabled.
+
+## 5. Which version would you choose for a public movie catalogue that changes once a week, and why?
+
+I would choose the server-rendered static version (`/movies`) because the catalogue changes only once a week. Static generation provides fast loading, good SEO, and reduces unnecessary server processing. The page can be rebuilt when the catalogue changes.
