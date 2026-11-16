@@ -5,11 +5,12 @@ import { getMovies } from "@/lib/movies";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Movies | Movie Night",
+  title: "Movies",
   description: "The movies you can vote for",
 };
 
 export default async function MoviesPage() {
+  
   const movies = await getMovies();
   console.log(`[movies] rendered ${movies.length} movies`);
 

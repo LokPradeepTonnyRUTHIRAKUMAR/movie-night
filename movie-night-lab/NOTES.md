@@ -104,3 +104,63 @@ We can prove this by checking the terminal running Next.js, viewing the page sou
 ## 5. Which version would you choose for a public movie catalogue that changes once a week, and why?
 
 I would choose the server-rendered static version (`/movies`) because the catalogue changes only once a week. Static generation provides fast loading, good SEO, and reduces unnecessary server processing. The page can be rebuilt when the catalogue changes.
+
+# Lab 3 – Routes, Layouts and Milestone 1
+
+## 1. How can NavLink use `usePathname()` and still have the correct `aria-current` attribute in the initial server HTML?
+
+`usePathname()` is a Client Component hook because it reads the current URL path in the browser.
+
+However, Next.js can also pre-render Client Components on the server when generating the initial HTML. Therefore, the server can render the navigation links with the appropriate `aria-current` attribute for the initial route.
+
+After hydration, the component can respond to client-side navigation and update the active link.
+
+## 2. Why does `generateStaticParams()` use `String(movie.id)`, and why does `/movies/42` return a 404?
+
+`movie.id` is a number in the movie data, but dynamic route parameters are strings.
+
+Therefore, `String(movie.id)` converts the numeric ID into a string. For example, `2` becomes `"2"`.
+
+The `generateStaticParams()` function generates static pages for all available movie IDs during the build process.
+
+By setting `dynamicParams = false`, Next.js only accepts the parameters returned by `generateStaticParams()`. Since movie ID 42 does not exist in the generated list, `/movies/42` automatically returns a 404.
+
+## 3. Why do notes persist between `/movies` and `/movies/2`, but disappear when navigating to `/about`?
+
+The nested layout in `app/movies/layout.tsx` wraps both the Movies list page and the individual movie detail pages.
+
+When navigating between `/movies` and `/movies/2`, Next.js preserves the shared nested layout. Therefore, the notes input remains visible and its current value is retained.
+
+When navigating to `/about`, the Movies layout is no longer part of the active route hierarchy. Therefore, the notes input is removed.
+
+## 4. In a production error test, where is the real error message, and why is it not sent to the browser?
+
+The real error details are available in the server logs.
+
+In production, Next.js does not expose the original error message to the browser because doing so could reveal sensitive application information, internal implementation details, or server-side data.
+
+Instead, the browser receives a generic error message and an error digest.
+
+The `error.tsx` file displays a user-friendly error interface, and its `reset()` function allows the user to retry rendering the failed route.
+
+## 5. Why does loading appear under `npm run dev` on `/movies/2`, but not under `npm start`, while it appears on `/movies`?
+
+The `loading.tsx` file provides a loading interface while a route is waiting for data.
+
+In development mode, navigating to `/movies/2` can display the loading UI because the page fetches movie data using `getMovie()`, which calls `getMovies()` and waits for one second.
+
+In production, `/movies/2` is statically generated during the build using `generateStaticParams()`. Its HTML is already generated, so it does not need to wait for the data request when opened.
+
+The `/movies` page is marked with `export const dynamic = "force-dynamic"`. Therefore, it is rendered on demand and can display the loading UI while waiting for the movie data.
+
+---
+
+## Lab 3 – Implementation Checklist
+
+- [x] Created shared navigation using `NavLink`.
+- [x] Updated the root layout with shared navigation.
+- [x] Added active navigation indicators using `aria-current`.
+- [x] Created individual movie detail pages using `/movies/[id]`.
+- [x] Added `getMovie()` to retrieve a movie by ID.
+- [x] Added dynamic metadata using `generateMetadata()`.
+- [x] Added `generateStaticParams()` for all
