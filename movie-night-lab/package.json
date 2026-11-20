@@ -1,3 +1,4 @@
+
 {
   "name": "movie-night",
   "version": "0.1.0",
@@ -6,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "api": "node api/server.mjs"
   },
   "dependencies": {
     "next": "^16.4.5",

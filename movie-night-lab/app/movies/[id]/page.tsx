@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMovie, getMovies } from "@/lib/movies";
+import { ShortlistButton } from "@/components/shortlist-button";
 
 // Only the ids returned by generateStaticParams exist.
 export const dynamicParams = false;
@@ -38,7 +39,10 @@ export default async function MoviePage({
       <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
         Rendered at {new Date().toISOString()}
       </p>
-      <Link href="/movies" className="mt-6 inline-block underline">
+
+      <ShortlistButton movieTitle={movie.title} />
+
+      <Link href="/movies" className="mt-6 block w-fit underline">
         Back to all movies
       </Link>
     </main>
