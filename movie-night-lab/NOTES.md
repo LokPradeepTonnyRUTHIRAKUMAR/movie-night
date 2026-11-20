@@ -151,7 +151,7 @@ In development mode, navigating to `/movies/2` can display the loading UI becaus
 
 In production, `/movies/2` is statically generated during the build using `generateStaticParams()`. Its HTML is already generated, so it does not need to wait for the data request when opened.
 
-The `/movies` page is marked with `export const dynamic = "force-dynamic"`. Therefore, it is rendered on demand and can display the loading UI while waiting for the movie data.
+At the end of Lab 3, `/movies` used `export const dynamic = "force-dynamic"`, so it was rendered on demand. That remains the setup at the end of Session 5.
 
 ---
 
@@ -163,4 +163,21 @@ The `/movies` page is marked with `export const dynamic = "force-dynamic"`. Ther
 - [x] Created individual movie detail pages using `/movies/[id]`.
 - [x] Added `getMovie()` to retrieve a movie by ID.
 - [x] Added dynamic metadata using `generateMetadata()`.
-- [x] Added `generateStaticParams()` for all
+- [x] Added `generateStaticParams()` for all movie IDs.
+- [x] Added a nested Movies layout that preserves its notes field across movie routes.
+- [x] Added loading, not-found, and error UI.
+
+## Lab 4, part 1
+
+### 1. Which calls happen during the build, and why are movie details fetched once?
+
+With an empty fetch cache, the build calls `GET /api/movies` once for `generateStaticParams()`, then `GET /api/movies/1` through `/api/movies/6`. `generateMetadata()` and the page request the same movie URL with the same options, so Next.js memoizes the matching fetch during that render.
+
+### 2. Where did the test API key go, and where should it be used?
+
+The intentional break rendered the server environment variable into the prerendered HTML, where any visitor could read it. A real API key belongs only in server-side code, such as a module protected with `server-only`; it must not be rendered or sent to a Client Component. The demonstration output has been removed.
+
+### 3. Why are function props and `server-only` imports rejected at the Client Component boundary?
+
+Props crossing from a Server Component to a Client Component must be serializable data, so a callback function cannot be sent in the RSC payload. A `server-only` module can contain server credentials and code, so importing and using it in a Client Component would cross that boundary and expose server-only behavior to the browser bundle.
+

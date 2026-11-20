@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 };
 
 export default async function MoviesPage() {
-  
   const movies = await getMovies();
   console.log(`[movies] rendered ${movies.length} movies`);
 
